@@ -1,4 +1,7 @@
+import axios, { AxiosResponse } from 'axios';
+const url = 'http://localhost:3000/users/';
 interface UserProps {
+  id?: number,
   name?: string,
   age?: number
 }
@@ -25,5 +28,15 @@ export class User {
     handlers.forEach(callback => {
       callback();
     })
+  }
+  fetch(): void {
+    axios.get(`http://localhost:3000/users/${this.get('id')}`)
+    .then((res: AxiosResponse): void => {
+      this.set(res.data);
+    })
+  }
+  save(): void {
+    const id = this.get('id');
+    id ? axios.put(`${url}${id}`, this.data) : axios.post(url, this.data)
   }
 }
