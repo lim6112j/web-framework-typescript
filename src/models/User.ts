@@ -1,33 +1,28 @@
 import axios, { AxiosResponse } from 'axios';
+import { Eventing } from './Eventing';
 const url = 'http://localhost:3000/users/';
 interface UserProps {
   id?: number,
   name?: string,
   age?: number
 }
-type Callback = () => void;
+// Option #1 
+// Accept dependencies as second constructor argument
+// new User({id:1}, new Eventing())
+// Option #2
+// static class method to preconfigure user and assign properties afterwards.
+// and return user instance.
+// Option #3
+// Only accept properties into constructor
+// Hard code dependencies as class properties
 export class User {
-  events: { [key: string]: Callback[] } = {}
+  events: Eventing = new Eventing();
   constructor(private data: UserProps) {}
   get(propName: string): (number | string) {
     return this.data[propName];
   }
   set(update: UserProps): void {
     Object.assign(this.data, update);
-  }
-  on(eventName: string, callback: Callback): void {
-    const handlers = this.events[eventName] || [];
-    handlers.push(callback);
-    this.events[eventName] = handlers
-  }
-  trigger(eventName: string): void {
-    const handlers = this.events[eventName];
-    if(!handlers || handlers.length === 0) {
-      return;
-    }
-    handlers.forEach(callback => {
-      callback();
-    })
   }
   fetch(): void {
     axios.get(`http://localhost:3000/users/${this.get('id')}`)
