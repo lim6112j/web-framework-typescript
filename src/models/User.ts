@@ -1,11 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { Eventing } from './Eventing';
-const url = 'http://localhost:3000/users/';
-interface UserProps {
-  id?: number,
-  name?: string,
-  age?: number
-}
+import { Sync } from './Sync';
+import { Attributes } from './Attributes';
+import { UserProps } from '../types/UserProps';
+
 // Option #1 
 // Accept dependencies as second constructor argument
 // new User({id:1}, new Eventing())
@@ -15,23 +13,12 @@ interface UserProps {
 // Option #3
 // Only accept properties into constructor
 // Hard code dependencies as class properties
+const rootUrl = 'http://localhost:3000/users';
 export class User {
-  events: Eventing = new Eventing();
-  constructor(private data: UserProps) {}
-  get(propName: string): (number | string) {
-    return this.data[propName];
-  }
-  set(update: UserProps): void {
-    Object.assign(this.data, update);
-  }
-  fetch(): void {
-    axios.get(`http://localhost:3000/users/${this.get('id')}`)
-    .then((res: AxiosResponse): void => {
-      this.set(res.data);
-    })
-  }
-  save(): void {
-    const id = this.get('id');
-    id ? axios.put(`${url}${id}`, this.data) : axios.post(url, this.data)
+  public events: Eventing = new Eventing();
+  public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
+  public attrs: Attributes<UserProps>;
+  constructor(attrs: UserProps){
+    this.attrs = new Attributes<UserProps>(attrs);
   }
 }
