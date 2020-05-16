@@ -1,9 +1,12 @@
-import { Collection } from './models/Collection';
+import { UserCollection } from './models/UserCollection';
 import { User } from './models/User';
 import { UserProps } from './types/UserProps';
 
-const collection = new Collection<User, UserProps>('http://localhost:3000/users', (json: UserProps) => User.buildUser(json));
-collection.on('change', () => {
-  console.log(collection)
-})
-collection.fetch();
+// const userCollection = new UserCollection();
+// userCollection.collection.on('change', () => {
+//   console.log(userCollection.collection)
+// })
+// userCollection.collection.fetch();
+const userCollection = User.buildUserCollection();
+userCollection.on('change', () => {console.log(userCollection)});
+userCollection.fetch();
