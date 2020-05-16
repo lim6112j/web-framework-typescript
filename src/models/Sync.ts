@@ -4,7 +4,7 @@ interface HasId {
 }
 export class Sync<T extends HasId> {
   constructor(public rootUrl: string){}
-  fetch<T>(id: (number | string)): AxiosPromise<T> {
+  fetch = <T>(id: (number | string)): AxiosPromise<T> => {
     return axios.get(`${this.rootUrl}/${id}`);
   }
   save = (data: T): AxiosPromise => {
