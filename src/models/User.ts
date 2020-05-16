@@ -28,6 +28,6 @@ export class User {
     return this.events.trigger;
   }
   get get() {
-    return this.attrs.get;
+    return this.attrs.get.bind(this.attrs);
   }
 }
