@@ -6,18 +6,21 @@ export class UserForm {
       'click:.set-age': this.onSetAgeClick
     }
   }
-
-  onSetAgeClick(): void {
-    console.log('setting age');
+  // below has 'this' resolution problem
+  // onSetAgeClick(): void {
+  //   this.model.setRandomAge();
+  // }
+  onSetAgeClick = (): void => {
+    this.model.setRandomAge();
   }
 
-  constructor(public parent: Element, private user: User){}
+  constructor(public parent: Element, private model: User){}
   template(): string {
     return `
     <div>
       <h1> User Form </h1>
-      <div> User Name : ${this.user.get('name')}</div>
-      <div> User Age : ${this.user.get('age')}</div>
+      <div> User Name : ${this.model.get('name')}</div>
+      <div> User Age : ${this.model.get('age')}</div>
       <input> </input>
       <button>click me</button>
       <button class="set-age">set random age</button>
