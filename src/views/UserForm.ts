@@ -1,17 +1,22 @@
 import { User } from "../models/User";
 import { View } from "./view";
+import { UserProps } from "../types/UserProps";
 
-export class UserForm extends View<User> {
+export class UserForm extends View<User, UserProps> {
   eventsmap(): {[key: string]: () => void} {
     return {
       'click:.change-name': this.onSetNameClick,
-      'click:.set-age': this.onSetAgeClick
+      'click:.set-age': this.onSetAgeClick,
+      'click:.save-model': this.onSaveClick
     };
   };
   // below has 'this' resolution problem
   // onSetAgeClick(): void {
   //   this.model.setRandomAge();
   // }
+  onSaveClick = (): void => {
+    this.model.save();
+  }
   onSetAgeClick = (): void => {
     this.model.setRandomAge();
   }
@@ -31,12 +36,10 @@ export class UserForm extends View<User> {
   template(): string {
     return `
     <div>
-      <h1> User Form </h1>
-      <div> User Name : ${this.model.get('name')}</div>
-      <div> User Age : ${this.model.get('age')}</div>
-      <input> </input>
+      <input placeholder="${this.model.get('name')}"> </input>
       <button class="change-name">change name</button>
       <button class="set-age">set random age</button>
+      <button class="save-model">Save</button
     </div>
     `;
   };

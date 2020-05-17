@@ -1,13 +1,17 @@
-// import { User } from '../models/User';
-interface HasOn {
-  on: (ev: string, fn:() => void) => void
-}
-export abstract class View<T extends HasOn> {
+import { Model } from '../models/Model';
+import { UserProps } from '../types/UserProps';
+export abstract class View<T extends Model<K>, K> {
+  regions: {[key:string]: Element} = {};
   constructor(public parent: Element, public model: T) {
     this.bindModel();
   }
-  abstract eventsmap(): {[key: string]: () => void};
   abstract template(): string;
+  eventsmap(): {[key: string]: () => void} {
+    return {};
+  };
+  regionsMap(): {[key: string]: string} {
+    return {};
+  }
   bindEvents(fragment: DocumentFragment): void {
     const eventsmap = this.eventsmap();
     for(let eventkey in eventsmap) {
@@ -22,11 +26,24 @@ export abstract class View<T extends HasOn> {
     // ()=>this.render : OK
     // this.render : this problem so should => this.render.bind(this)
   }
+  mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap();
+    for(let key in regionsMap) {
+      const selector:string = regionsMap[key];
+      const element = fragment.querySelectorAll(selector);
+      console.log(element)
+      if(element){
+        this.regions[key] = element[0];
+      }
+    }
+  }
   render() {
     this.parent.innerHTML = '';
     const templpateElement = document.createElement('template');
     templpateElement.innerHTML = this.template();
     this.bindEvents(templpateElement.content);
+    this.mapRegions(templpateElement.content);
     this.parent.appendChild(templpateElement.content);
   }
+
 }
