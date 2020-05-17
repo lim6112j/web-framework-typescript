@@ -3,7 +3,8 @@ import { User } from "../models/User";
 export class UserForm {
   eventsmap(): {[key: string]: () => void} {
     return {
-      'click:.set-age': this.onSetAgeClick
+      'click:.set-age': this.onSetAgeClick,
+      'click:.change-name': this.onSetNameClick
     }
   }
   // below has 'this' resolution problem
@@ -13,7 +14,14 @@ export class UserForm {
   onSetAgeClick = (): void => {
     this.model.setRandomAge();
   }
-
+  onSetNameClick = (): void => {
+    const input = this.parent.querySelector('input');
+    input ? this.model.set({name: input.value}) : null;
+    // if(input) {
+    //   const name = input.value;
+    //   this.model.set({name});
+    // }
+  }
   constructor(public parent: Element, private model: User){
     this.bindModel();
   }
@@ -25,7 +33,7 @@ export class UserForm {
       <div> User Name : ${this.model.get('name')}</div>
       <div> User Age : ${this.model.get('age')}</div>
       <input> </input>
-      <button>click me</button>
+      <button class="change-name">change name</button>
       <button class="set-age">set random age</button>
     </div>
     `;
