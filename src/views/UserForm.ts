@@ -1,12 +1,13 @@
 import { User } from "../models/User";
+import { View } from "./view";
 
-export class UserForm {
+export class UserForm extends View<User> {
   eventsmap(): {[key: string]: () => void} {
     return {
-      'click:.set-age': this.onSetAgeClick,
-      'click:.change-name': this.onSetNameClick
-    }
-  }
+      'click:.change-name': this.onSetNameClick,
+      'click:.set-age': this.onSetAgeClick
+    };
+  };
   // below has 'this' resolution problem
   // onSetAgeClick(): void {
   //   this.model.setRandomAge();
@@ -22,7 +23,8 @@ export class UserForm {
     //   this.model.set({name});
     // }
   }
-  constructor(public parent: Element, private model: User){
+  constructor(public parent: Element, public model: User){
+    super(parent, model);
     this.bindModel();
   }
 
@@ -38,25 +40,4 @@ export class UserForm {
     </div>
     `;
   };
-  bindEvents(fragment: DocumentFragment): void {
-    const eventsmap = this.eventsmap();
-    for(let eventkey in eventsmap) {
-      const [eventName, selector] = eventkey.split(':');
-      fragment.querySelectorAll(selector).forEach(element => {
-        element.addEventListener(eventName, eventsmap[eventkey])
-      })
-    } 
-  }
-  bindModel():void {
-    this.model.on('change', () => this.render())
-    // ()=>this.render : OK
-    // this.render : this problem so should => this.render.bind(this)
-  }
-  render() {
-    this.parent.innerHTML = '';
-    const templpateElement = document.createElement('template');
-    templpateElement.innerHTML = this.template();
-    this.bindEvents(templpateElement.content);
-    this.parent.appendChild(templpateElement.content);
-  }
 }
