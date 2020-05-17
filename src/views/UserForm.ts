@@ -14,7 +14,10 @@ export class UserForm {
     this.model.setRandomAge();
   }
 
-  constructor(public parent: Element, private model: User){}
+  constructor(public parent: Element, private model: User){
+    this.bindModel();
+  }
+
   template(): string {
     return `
     <div>
@@ -36,7 +39,13 @@ export class UserForm {
       })
     } 
   }
+  bindModel():void {
+    this.model.on('change', () => this.render())
+    // ()=>this.render : OK
+    // this.render : this problem so should => this.render.bind(this)
+  }
   render() {
+    this.parent.innerHTML = '';
     const templpateElement = document.createElement('template');
     templpateElement.innerHTML = this.template();
     this.bindEvents(templpateElement.content);
