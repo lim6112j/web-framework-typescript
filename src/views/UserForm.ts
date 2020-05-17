@@ -3,16 +3,14 @@ import { User } from "../models/User";
 export class UserForm {
   eventsmap(): {[key: string]: () => void} {
     return {
-      'click:button': this.onButtonClick,
-      'mouseenter:h1': this.onHover
+      'click:.set-age': this.onSetAgeClick
     }
   }
-  onButtonClick(): void {
-    console.log('hi there')
+
+  onSetAgeClick(): void {
+    console.log('setting age');
   }
-  onHover(): void {
-    console.log('on hover on h1')
-  }
+
   constructor(public parent: Element, private user: User){}
   template(): string {
     return `
@@ -22,6 +20,7 @@ export class UserForm {
       <div> User Age : ${this.user.get('age')}</div>
       <input> </input>
       <button>click me</button>
+      <button class="set-age">set random age</button>
     </div>
     `;
   };
