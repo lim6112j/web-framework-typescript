@@ -1,6 +1,6 @@
 import { UserEdit } from './views/UserEdit';
 import { User } from './models/User';
-import { UserList } from './views/Userlist';
+import { UserList } from './views/UserList';
 const user = User.buildUser({name: 'joo', age: 30});
 const userL = User.buildUserCollection();
 const root = document.getElementById('root');

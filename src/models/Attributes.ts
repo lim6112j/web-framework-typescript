@@ -5,7 +5,7 @@ export class Attributes<T> {
     return this.data[key];
   }
   set = (update: T): void => {
-    Object.assign(this.data, update);
+    (<any>Object).assign(this.data, update);
   }
   getAll = (): T => {
     return this.data;

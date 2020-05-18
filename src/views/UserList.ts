@@ -5,23 +5,38 @@ import { UserProps } from "../types/UserProps";
 import { Collection } from "../models/Collection";
 const rootUrl = 'http://localhost:3000/users'
 interface response {
-  data: [{}]
+  attrs: {
+    data: {
+      name: string
+    }
+  }
 }
-export class UserList extends CollectionView<User> {
-  constructor(public parent: Element, public userL: Collection<User, UserProps>){
-    super(parent);
+export class UserList extends CollectionView<User, UserProps> {
+  constructor(public parent: Element, public collection: Collection<User, UserProps>){
+    super(parent, collection);
+    this.collection.fetch();
   }
   template() {
     return `
-    <div>${this.renderItem()}</div>
+    <div>${this.renderItems()}</div>
     `
   }
-  models(): AxiosPromise {
-    return Axios.get(rootUrl);
+  renderItems() {
+    this.collection.models.forEach(user => {
+      this.renderItem(user, this.parent);
+    })
   }
-  renderItem(): string {
-    console.log(this.userL)
-    this.userL.fetch();
-    return this.userL.models.join('');
+  renderItem(model: User, parent: Element): string {
+    let templt = '';
+    console.log(this.collection)
+    
+    this.collection.models.forEach((user: User) => {
+      console.log(user)
+      // user.get.bind(user);
+      // const userName = user.get('name');
+      // templt = templt.concat(userName ? userName : '')
+    });
+    console.log(templt)
+    return templt;
   }
 }
