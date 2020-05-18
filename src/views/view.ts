@@ -30,20 +30,22 @@ export abstract class View<T extends Model<K>, K> {
     const regionsMap = this.regionsMap();
     for(let key in regionsMap) {
       const selector:string = regionsMap[key];
-      const element = fragment.querySelectorAll(selector);
-      console.log(element)
+      const element = fragment.querySelector(selector);
+      // console.log(element)
       if(element){
-        this.regions[key] = element[0];
+        this.regions[key] = element;
       }
     }
   }
   render() {
     this.parent.innerHTML = '';
-    const templpateElement = document.createElement('template');
-    templpateElement.innerHTML = this.template();
-    this.bindEvents(templpateElement.content);
-    this.mapRegions(templpateElement.content);
-    this.parent.appendChild(templpateElement.content);
+    const templateElement = document.createElement('template');
+    templateElement.innerHTML = this.template();
+    this.bindEvents(templateElement.content);
+    this.mapRegions(templateElement.content);
+    // for(let key in this.regions){
+    //   this.parent.appendChild(this.regions[key]);
+    // }
+    this.parent.appendChild(templateElement.content);
   }
-
 }
