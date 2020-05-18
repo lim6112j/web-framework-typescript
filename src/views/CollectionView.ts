@@ -4,13 +4,18 @@ import { Model } from "../models/Model";
 
 export abstract class CollectionView<T, P> {
   constructor(public parent: Element, public collection: Collection<T, P>) {}
-  abstract template(): string;
-  abstract renderItem(model: T, parent: Element): string;
+  abstract renderItem(model: T, parent: Element): void;
 
-  render() {
+  render():void {
     this.parent.innerHTML ='';
     const templateElement = document.createElement('template');
-    templateElement.innerHTML = this.template();
+    // console.log(this.collection.models)
+    for(let m of this.collection.models){
+      // console.log(m)
+      const itemParent = document.createElement('div');
+      this.renderItem(m, itemParent);
+      templateElement.content.append(itemParent);
+    }
     this.parent.appendChild(templateElement.content);
   }
 }

@@ -20,8 +20,9 @@ export class Collection<T, P>{
        const obj: T = this.deserialize(value);
        this.models.push(obj);
       });
+      this.trigger('change')
     })
     .catch(err => console.log(err));
-    this.trigger('change')
+    
   }
 }

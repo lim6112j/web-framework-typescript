@@ -1,9 +1,18 @@
 import { UserEdit } from './views/UserEdit';
 import { User } from './models/User';
 import { UserList } from './views/UserList';
-const user = User.buildUser({name: 'joo', age: 30});
-const userL = User.buildUserCollection();
-const root = document.getElementById('root');
+import { Collection } from './models/Collection';
+import { UserProps } from './types/UserProps';
+const users = User.buildUserCollection();
+// console.log(users)
+users.on('change', () => {
+  const root = document.getElementById('root');
+
+  if(root){
+    new UserList(root, users).render()
+  }
+})
+users.fetch();
 // if(root){
 //   const userEdit = new UserEdit(root, user);
 //   userEdit.render();
@@ -11,8 +20,3 @@ const root = document.getElementById('root');
 // } else {
 //   throw new Error('root element not exists')
 // }
-if(root) {
-  const userList = new UserList(root, userL);
-  userList.render();
-  console.log(userList)
-}
