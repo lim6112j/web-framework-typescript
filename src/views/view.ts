@@ -37,15 +37,16 @@ export abstract class View<T extends Model<K>, K> {
       }
     }
   }
+  onRender(): void {
+
+  }
   render() {
     this.parent.innerHTML = '';
     const templateElement = document.createElement('template');
     templateElement.innerHTML = this.template();
     this.bindEvents(templateElement.content);
     this.mapRegions(templateElement.content);
-    // for(let key in this.regions){
-    //   this.parent.appendChild(this.regions[key]);
-    // }
+    this.onRender();
     this.parent.appendChild(templateElement.content);
   }
 }
