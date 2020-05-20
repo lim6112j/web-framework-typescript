@@ -1,19 +1,20 @@
 import axios, { AxiosResponse, AxiosPromise } from 'axios';
+import { from, Observable } from 'rxjs';
 interface HasId {
   id?: number;
 }
 export class Sync<T extends HasId> {
   constructor(public rootUrl: string){}
-  fetch<T>(id: (number | string)): AxiosPromise<T> {
-    return axios.get(`${this.rootUrl}/${id}`);
+  fetch<T>(id: number): Observable<AxiosResponse<T>> {
+    return from(axios.get(`${this.rootUrl}/${id}`));
   }
-  save = (data: T): AxiosPromise => {
+  save = (data: T): Observable<AxiosResponse> => {
     const { id } = data;
 
     if(id) {
-      return axios.put(`${this.rootUrl}/${id}`, data);
+      return from(axios.put(`${this.rootUrl}/${id}`, data));
     } else {
-      return axios.post(`http://localhost:3000/users`, data);
+      return from(axios.post(`http://localhost:3000/users`, data));
     }
   }
 }

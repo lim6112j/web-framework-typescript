@@ -18,8 +18,8 @@ export class User {
   public events: Eventing = new Eventing();
   public sync: Sync<UserProps> = new Sync<UserProps>(rootUrl);
   public attrs: Attributes<UserProps>;
-  constructor(attrs: UserProps){
-    this.attrs = new Attributes<UserProps>(attrs);
+  constructor(props: UserProps){
+    this.attrs = new Attributes<UserProps>(props);
   }
   get on() {
     return this.events.on;
@@ -29,5 +29,11 @@ export class User {
   }
   get get() {
     return this.attrs.get;
+  }
+  get set() {
+    return this.attrs.set;
+  }
+  get fetch() {
+    return this.sync.fetch;
   }
 }
