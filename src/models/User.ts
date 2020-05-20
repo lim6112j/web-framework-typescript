@@ -36,4 +36,7 @@ export class User {
   get fetch() {
     return this.sync.fetch;
   }
+  get save() {
+    return this.sync.save;
+  }
 }
