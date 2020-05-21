@@ -1,8 +1,8 @@
 import { User } from './models/User';
 import { Subscription } from 'rxjs';
 const log = (msg, v) => console.log(msg, " => ", v);
-const user = new User({name: 'lim', age: 20});
-user.set({name: 'jaim'})
+const user = User.buildUser({name: 'joo', age: 50})
+user.set({name: 'gogo'})
 log('name',user.get('name'))
 
 let subs: Subscription = new Subscription;
@@ -16,4 +16,4 @@ user.on('unsubscribe', () => {
 });
 
 subs = user.fetch(1).subscribe(res => user.trigger('change'));
-user.save(user.attrs.data)
+user.save(user.getAll())
