@@ -17,7 +17,7 @@ interface UserProps {
 import { Model } from "./Model";
 
 // Hard code dependencies as class properties
-const rootUrl = 'http://localhost:3000/users';
+const rootUrl = 'http://localhost:3000/users/';
 export class User extends Model<UserProps>{
   static buildUser(attrs: UserProps): User {
     return new User(new Attributes(attrs), new Sync<UserProps>(rootUrl), new Eventing())
